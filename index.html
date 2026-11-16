@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projectile Lab</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Projectile Lab</h1>
+    <p class="sub">Engineering Mechanics, kinematics of a particle. Set the launch, compare the textbook parabola with a run that includes air drag, and read the worked solution below the drawing.</p>
+  </header>
+
+  <div class="layout">
+    <aside class="panel" aria-label="Inputs">
+      <h2>Launch</h2>
+      <div class="presets" role="group" aria-label="Example problems">
+        <button type="button" data-p="football">Football kick</button>
+        <button type="button" data-p="cliff">Cliff throw</button>
+        <button type="button" data-p="moon">Moon shot</button>
+        <button type="button" data-p="cricket">Cricket six</button>
+      </div>
+      <div class="field"><label for="v0">Speed v₀ <output id="o_v0"></output></label><input id="v0" type="range" min="1" max="100" step="0.5" value="30"></div>
+      <div class="field"><label for="ang">Angle θ <output id="o_ang"></output></label><input id="ang" type="range" min="0" max="90" step="0.5" value="45"></div>
+      <div class="row2">
+        <div class="field"><label for="h0">Height h₀ (m)</label><input id="h0" type="number" min="0" step="0.5" value="0"></div>
+        <div class="field"><label for="g">Gravity g (m/s²)</label><input id="g" type="number" min="0.1" step="0.01" value="9.81"></div>
+      </div>
+      <label class="toggle"><input id="drag" type="checkbox"> Include air drag</label>
+      <div id="dragFields" hidden>
+        <div class="row2">
+          <div class="field"><label for="m">Mass (kg)</label><input id="m" type="number" min="0.001" step="0.01" value="0.43"></div>
+          <div class="field"><label for="dia">Diameter (cm)</label><input id="dia" type="number" min="0.1" step="0.1" value="22"></div>
+          <div class="field"><label for="cd">Drag coeff. C<sub>d</sub></label><input id="cd" type="number" min="0.01" step="0.01" value="0.25"></div>
+          <div class="field"><label for="rho">Air density (kg/m³)</label><input id="rho" type="number" min="0" step="0.01" value="1.225"></div>
+        </div>
+        <p class="note" style="margin-top:0">Quadratic drag, a = −k|v|v with k = ½ρC<sub>d</sub>A / m, integrated with RK4.</p>
+      </div>
+    </aside>
+
+    <div class="stack">
+      <section class="panel" aria-label="Trajectory">
+        <div class="board-head">
+          <h2 style="margin:0">Trajectory</h2>
+          <div class="legend"><span><i class="ideal"></i>Ideal (no drag)</span><span id="legDrag"><i class="drag"></i>With drag</span></div>
+        </div>
+        <canvas id="cv" role="img" aria-label="Projectile trajectory plot"></canvas>
+        <div class="controls">
+          <button type="button" id="play" class="primary">Play</button>
+          <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Time scrubber">
+          <span class="clock" id="clock">t = 0.00 s</span>
+        </div>
+      </section>
+
+      <section class="panel" aria-label="Results">
+        <h2>Results</h2>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Quantity</th><th class="num">Ideal</th><th class="num" id="thDrag">With drag</th></tr></thead>
+            <tbody id="res"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel work" aria-label="Worked solution">
+        <h2>Worked solution (ideal case)</h2>
+        <ol id="steps"></ol>
+      </section>
+
+      <section class="panel" aria-label="Formulas">
+        <h2>Equations used</h2>
+        <div class="formulas">
+          <div><b>Components</b><span>vₓ = v₀cosθ, v_y = v₀sinθ</span></div>
+          <div><b>Position</b><span>x = vₓt, y = h₀ + v_y t − ½gt²</span></div>
+          <div><b>Time of flight</b><span>T = (v_y + √(v_y² + 2gh₀)) / g</span></div>
+          <div><b>Range</b><span>R = vₓT</span></div>
+          <div><b>Maximum height</b><span>H = h₀ + v_y² / 2g</span></div>
+          <div><b>Impact speed</b><span>v = √(vₓ² + (v_y − gT)²)</span></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
